@@ -88,7 +88,8 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   const [rows, setRows] = useState<ReceiverWeekRow[]>([]);
   const [model, setModel] = useState<ExpectationModel | null>(null);
   const [filters, setFiltersState] = useState<FilterState>(defaultFilters);
-  const [storyMode, setStoryMode] = useState(false);
+  // Talking Points (Story Mode) open by default; the toggle still turns it off.
+  const [storyMode, setStoryMode] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
