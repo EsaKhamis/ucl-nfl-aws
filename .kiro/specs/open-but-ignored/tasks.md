@@ -46,7 +46,7 @@ Every task has one owner. Run only your own tasks, in order, and stop at each ch
   - Write the integrity shares (Req 2.7, 2.8), the referential-integrity asserts (Req 9.4, 9.5) and `results/data_report.json`.
   - _Requirements: 2.7, 2.8, 8.2, 8.3, 8.5, 9.4, 9.5_
 
-- [ ] 8. Checkpoint at 11:30. Plot 5 plays with Dev 3 and confirm the direction, LOS and targets look right. Fix anything wrong before Dev 2 builds on the full tables.
+- [x] 8. Checkpoint at 11:30. Plot 5 plays with Dev 3 and confirm the direction, LOS and targets look right. Fix anything wrong before Dev 2 builds on the full tables.
 
 - [ ] 9. Clean-clone test (12:15–12:45)
   - Clone the repo into a fresh directory, set up a venv from the pinned `requirements.txt`, and link `data/`.

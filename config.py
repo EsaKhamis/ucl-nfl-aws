@@ -27,6 +27,8 @@ class Config:
     open_mode: str = "most_open"        # or "threshold"
     open_threshold: float = 3.0         # yards; set from the data on the day
     closing_horizon_s: float = 0.5      # Openness_Score horizon
+    lambda_lane: float = 0.5            # composite openness: weight of the throwing-lane penalty (Dev 2)
+    lane_cushion: float = 2.0           # yards: a defender closer than this to the QB-receiver lane is penalized
     route_minimum: int = 100
     split_route_minimum: int = 40
     team_route_minimum: int = 50
