@@ -5,8 +5,9 @@ Usage:
     trk = load_tracking(2021090900, standardize=True)
     plays = add_los_x(load_plays(), trk)
 
-Nothing is loaded at import time. Set NFL_DATA_DIR / NFL_OUT_DIR to point at
-different folders (defaults: ./data and ./out next to this file).
+Nothing is loaded at import time. Set NFL_DATA_DIR / NFL_OUT_DIR /
+NFL_RESULTS_DIR to point at different folders (defaults: ./data, ./out and
+./results next to this file).
 """
 
 import json
@@ -17,7 +18,8 @@ import numpy as np
 import pandas as pd
 
 DATA_DIR = Path(os.environ.get("NFL_DATA_DIR", Path(__file__).parent / "data"))
-OUT_DIR = Path(os.environ.get("NFL_OUT_DIR", Path(__file__).parent / "out"))
+OUT_DIR = Path(os.environ.get("NFL_OUT_DIR", Path(__file__).parent / "out"))  # Derived_Dir
+RESULTS_DIR = Path(os.environ.get("NFL_RESULTS_DIR", Path(__file__).parent / "results"))  # Outputs_Dir
 
 # Field dimensions in yards (x includes both 10-yard end zones).
 FIELD_LENGTH = 120.0
@@ -47,7 +49,8 @@ REQUIRED_COLUMNS = {
 REFERENCE_COUNTS = {"games": 122, "plays": 8557, "players": 1679, "tracking_files": 122}
 
 SNAP_EVENTS = ("ball_snap", "autoevent_ballsnap")
-BALL_LOS_TOLERANCE = 1.5   # yards (Requirement 2.7)
+BALL_LOS_TOLERANCE = 2.5   # yards (Requirement 2.7, amended 10:30)
+BALL_LOS_INFO_TOLERANCE = 1.5  # yards, reported for information only
 DIRECTION_MIN_SHARE = 0.99  # Requirements 2.7 and 2.8
 THROW_RESULTS = ("C", "I", "IN")
 
@@ -205,8 +208,8 @@ def direction_check(tracking, plays):
 
     `tracking` must be standardized; `plays` must have los_x (see add_los_x).
     Returns one row per play with ball_x, offense_x, defense_x (mean x),
-    ball_near_los (|ball_x - los_x| <= 1.5) and sides_split
-    (offense_x < los_x < defense_x).
+    ball_near_los (|ball_x - los_x| <= 2.5), ball_within_1_5 (info only)
+    and sides_split (offense_x < los_x < defense_x).
     """
     keys = ["gameId", "playId"]
     f = tracking.merge(snap_frames(tracking), on=keys)
@@ -217,7 +220,9 @@ def direction_check(tracking, plays):
     mean_x = f.groupby(keys + ["side"])["x"].mean().unstack("side")
     per_play = (f.groupby(keys)[["passResult", "los_x", "snap_frameId"]].first()
                 .join(mean_x.rename(columns=lambda s: f"{s}_x")).reset_index())
-    per_play["ball_near_los"] = (per_play["ball_x"] - per_play["los_x"]).abs() <= BALL_LOS_TOLERANCE
+    gap = (per_play["ball_x"] - per_play["los_x"]).abs()
+    per_play["ball_near_los"] = gap <= BALL_LOS_TOLERANCE
+    per_play["ball_within_1_5"] = gap <= BALL_LOS_INFO_TOLERANCE
     per_play["sides_split"] = ((per_play["offense_x"] < per_play["los_x"])
                                & (per_play["defense_x"] > per_play["los_x"]))
     return per_play
@@ -233,6 +238,7 @@ def direction_summary(per_play):
             "n_plays": int(len(sub)),
             "ball_near_los_share": round(float(sub["ball_near_los"].mean()), 4),
             "sides_split_share": round(float(sub["sides_split"].mean()), 4),
+            "ball_within_1_5_share_info": round(float(sub["ball_within_1_5"].mean()), 4),
         }
         for check in ("ball_near_los_share", "sides_split_share"):
             if summary[name][check] < DIRECTION_MIN_SHARE:
@@ -259,8 +265,8 @@ def build_data_report(games, plays, players, scouting):
 
 
 def write_data_report(report, path=None):
-    """Write the Data_Report dict as JSON (default OUT_DIR/data_report.json)."""
-    path = Path(path) if path else OUT_DIR / "data_report.json"
+    """Write the Data_Report dict as JSON (default RESULTS_DIR/data_report.json)."""
+    path = Path(path) if path else RESULTS_DIR / "data_report.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report, indent=2) + "\n")
     return path
