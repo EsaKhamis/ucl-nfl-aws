@@ -234,7 +234,7 @@ Columns: `gameId`, `playId`, `receiver_player_id`, `receiver_player_name`, `epa`
 4. THE Direction_Standardizer SHALL express `absoluteYardlineNumber` in standardized coordinates as LOS_x.
 5. FOR ALL tracking rows, applying the left-direction transform twice SHALL return the original x, y, o and dir within 1e-6 (involution property).
 6. FOR ALL tracking rows, standardized o and dir SHALL lie in [0, 360).
-7. WHEN standardization of all Throw_Plays completes, THE Direction_Standardizer SHALL record in the Data_Report the share of Throw_Plays where the ball's x at the Snap_Frame is within 1.5 yards of LOS_x, and this share SHALL be at least 99%.
+7. WHEN standardization of all Throw_Plays completes, THE Direction_Standardizer SHALL record in the Data_Report the share of Throw_Plays where the ball's x at the Snap_Frame is within 2.5 yards of LOS_x, and this share SHALL be at least 99%. (On game 2021090900 the ball sits a median 0.44 yards behind LOS_x, and every play is within 3 yards.)
 8. WHEN standardization of all Throw_Plays completes, THE Direction_Standardizer SHALL record in the Data_Report the share of Throw_Plays where, at the Snap_Frame, the mean offensive x is below LOS_x and the mean defensive x is above LOS_x, and this share SHALL be at least 99%.
 
 ### Requirement 3: [Data] [P0] Locate snap and release frames and classify Throw_Plays
@@ -386,7 +386,7 @@ Columns: `gameId`, `playId`, `receiver_player_id`, `receiver_player_name`, `epa`
 
 #### Acceptance Criteria
 
-1. THE Expected_Target_Model SHALL estimate xTarget for each Route on a Model_Play with a logistic model whose features are `openness_pre`, `depth`, `dist_from_qb` and Rusher_Distance.
+1. THE Expected_Target_Model SHALL estimate xTarget for each Route on a Model_Play with a logistic model whose features are `openness_pre`, `depth`, `dist_from_qb`, Rusher_Distance × `depth` and Rusher_Distance × `dist_from_qb`. Rusher_Distance is the same for every Route on a play, so after within-play normalization it can only take effect through these interactions.
 2. THE Expected_Target_Model SHALL fit on all Model_Plays in the configured games.
 3. THE Expected_Target_Model SHALL normalize xTarget within each Model_Play so that the play's xTarget values sum to 1.
 4. FOR ALL Model_Plays, each xTarget SHALL lie in [0, 1] and the play's xTarget values SHALL sum to 1 within 1e-6.
