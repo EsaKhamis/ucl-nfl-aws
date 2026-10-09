@@ -12,6 +12,7 @@ import { CoverageProfile } from "@/components/CoverageProfile";
 import { FilterBar } from "@/components/FilterBar";
 import { HeadlineChart } from "@/components/HeadlineChart";
 import { Leaderboards } from "@/components/Leaderboards";
+import { MethodologyNote } from "@/components/MethodologyNote";
 import { StoryMode } from "@/components/StoryMode";
 import { TeamPanels } from "@/components/TeamPanels";
 import { useDashboard } from "@/hooks/useDashboard";
@@ -112,6 +113,7 @@ export function DashboardShell() {
             </Section>
           </>
         )}
+        <MethodologyNote />
       </main>
     </div>
   );
