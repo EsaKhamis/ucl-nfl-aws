@@ -23,8 +23,8 @@ import type { ExpectationModel, ReceiverWeekRow } from "./types";
  */
 export const defaultModel: ExpectationModel = {
   formula: "clamp(a + b*openRate, 0, 1) (fit over tracking expectedTargetShare)",
-  a: 0.205036,
-  b: 0.052851,
+  a: 0.205064,
+  b: 0.051424,
 };
 
 function clamp01(x: number): number {

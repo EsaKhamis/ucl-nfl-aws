@@ -1,7 +1,54 @@
 # Real Data Pipeline
 
 This document describes the real-data ETL that feeds the NFL "Target Over
-Expectation" (TOE) dashboard. It is the no-tracking **proxy** pipeline.
+Expectation" (TOE) dashboard. It covers two pipelines: the **tracking**
+pipeline (current default, next section) and the original no-tracking
+**proxy** pipeline (rest of this document).
+
+## Tracking pipeline (current `receivers.json`)
+
+`export_dashboard.py` (repo root) turns the Metrics stage's route table
+`out/c3_routes.parquet` (Contract C3, one row per route on a model play) into
+the same envelope and row schema described below. Run it after the Python
+pipeline has written C3:
+
+```bash
+npm run data:tracking        # = cd .. && ${PYTHON:-python3} export_dashboard.py
+# the Python needs pandas + pyarrow (repo requirements.txt), e.g.
+PYTHON=~/anaconda3/bin/python3 npm run data:tracking
+```
+
+It writes `public/data/receivers.json` (what the UI loads) and an identical
+`public/data/receivers.tracking.json`. `receivers.real.json` (proxy backup) and
+`receivers.sample.json` are not touched. `schemaVersion` is `2.0.0-tracking`.
+
+Per receiver per week (all rates per route, so routes-weighted means of the
+week rows and summed counts reproduce C4's `All` split):
+
+- `routesRun` = C3 routes; `targets` = sum of `is_target`; `receptions` =
+  targets with `passResult == "C"`; `yards` = sum of `playResult` on those.
+- `openRate` = mean of `open_flag` (most-open receiver on the play, from
+  tracking at 0.4 s before release).
+- `targetShare` = `targets / routesRun` (per route, not share of team targets).
+- `expectedTargetShare` = `sum(xtarget) / routesRun`; `xtarget` is the logistic
+  expected-target model, normalized to sum to 1 per play.
+- `toe` = `targetShare − expectedTargetShare`.
+- `*VsMan` / `*VsZone`: the same rates restricted to `coverage_type` Man / Zone
+  (0 when the receiver ran no such route that week).
+- `team` / `opponent` = mode of `possessionTeam` / `defensiveTeam`; `gameId` =
+  game with the most routes that week; `position` = `position_group`; `LA → LAR`.
+- `expectationModel.a/b` = routes-weighted least-squares line
+  `expectedTargetShare ≈ a + b·openRate` over the rows. It is an approximation
+  used only for the headline chart's reference line.
+
+**Switch back to the proxy:** `npm run data:real` (rebuilds from CSVs), or copy
+`public/data/receivers.real.json` over `public/data/receivers.json`. Switch
+forward again with `npm run data:tracking` or by copying
+`receivers.tracking.json`.
+
+---
+
+The rest of this document describes the no-tracking **proxy** pipeline.
 
 ## Source dataset
 

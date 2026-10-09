@@ -1,22 +1,18 @@
-# # Raw data and generated outputs (tracking alone is ~811 MB)
-# data/
-# out/
-
-# # Python
-# .venv/
-# __pycache__/
-# *.pyc
-# .ipynb_checkpoints/
-# .DS_Store
 # Raw data and generated outputs (tracking alone is ~811 MB)
 data/
-#out/
+out/
+
+# Agent / IDE workspace state (matches nested dirs too, e.g. visualisation/.agents)
+.agents/
+.kiro/
 
 # Python
 .venv/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# OS
 .DS_Store
 
 # Pre-event planning brief (rules: none of it goes in the submission)
