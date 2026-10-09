@@ -4,13 +4,13 @@ Every task has one owner. Run only your own tasks, in order, and stop at each ch
 
 ## Dev 1: Data
 
-- [ ] 1. Scaffold the shared files (by 10:40)
+- [x] 1. Scaffold the shared files (by 10:40)
   - Write `config.py` with the full `Config` dataclass from `design.md`.
   - Write `run.py` with the `--games`, `--rebuild`, `--stage` and `--fixtures` flags. Have it call `snapshot.build`, `aggregate.build` and `charts.build`, and create stubs for any module that doesn't exist yet.
   - Push both files. Confirm with Dev 3 that the repo is public.
   - _Requirements: 8.1, 8.4, 25.5_
 
-- [ ] 2. Write the contract tooling (by 10:45)
+- [x] 2. Write the contract tooling (by 10:45)
   - In `contracts_data.py`, write `validate(df, schema, key, name)`, plus the C1 and C2 schemas and `fixture_c1c2(cfg)`. The fixture covers 3 plays, each with 6 offsets and 23 rows.
   - Running `python run.py --fixtures --stage data` writes the fixtures to `out/fixtures/`, and they pass validation.
   - _Requirements: 9.1, 9.2, 9.3_
@@ -21,19 +21,19 @@ Every task has one owner. Run only your own tasks, in order, and stop at each ch
   - Count the source rows and warn on any difference from the reference copy.
   - _Requirements: 1.1–1.6_
 
-- [ ] 4. Find events and eligible receivers in `snapshot.py`
+- [x] 4. Find events and eligible receivers in `snapshot.py`
   - Find the snap and release frames and classify Throw_Plays. Record the excluded plays and their reasons.
   - Compute LOS_x and Line_to_Gain_x using the transform in `design.md`.
   - Mark Eligible_Receivers and their Position_Group, mapping FB to RB.
   - _Requirements: 2.4, 3.1–3.6, 4.1–4.4_
 
-- [ ] 5. Match targets in `targets.py`
+- [x] 5. Match targets in `targets.py`
   - Write the parser and the normalized name key from `design.md`, with the last-name-only fallback.
   - Before wiring it in, check it by hand on 20 random descriptions.
   - Set `target_nflId`, `target_source` and `is_model_play`. Report the match rate and warn if it's below 85%.
   - _Requirements: 5.1–5.9_
 
-- [ ] 6. Build C1 and C2 on one game (by 11:00)
+- [x] 6. Build C1 and C2 on one game (by 11:00)
   - Take snapshots at offsets 0–5 with clamping.
   - Add the C2 context: score margin, pressured, QB, `n_eligible` and time to throw.
   - Write `out/c1_snapshot.parquet` and `out/c2_plays.parquet`, and validate both.
@@ -100,7 +100,7 @@ Every task has one owner. Run only your own tasks, in order, and stop at each ch
 
 ## Dev 3: Story
 
-- [ ] 21. Repo hygiene (by 10:40)
+- [x] 21. Repo hygiene (by 10:40)
   - Make the GitHub repo public.
   - Add `plan.md` to `.gitignore`.
   - Pin `scikit-learn==1.5.1` and `pyarrow==16.1.0` in `requirements.txt`, alongside the existing pins.
