@@ -10,7 +10,7 @@
 # .DS_Store
 # Raw data and generated outputs (tracking alone is ~811 MB)
 data/
-out/
+#out/
 
 # Python
 .venv/
