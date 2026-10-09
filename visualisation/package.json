@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "generate-data": "node scripts/generate-data.mjs",
-    "data:real": "node scripts/build-real-data.mjs"
+    "data:real": "node scripts/build-real-data.mjs",
+    "data:tracking": "cd .. && ${PYTHON:-python3} export_dashboard.py"
   },
   "dependencies": {
     "next": "^15",

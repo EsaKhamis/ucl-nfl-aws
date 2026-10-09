@@ -1,11 +1,13 @@
 # Targets Over Expected: Who Earns Their Targets, and Who Gets Open but Ignored
 
-Target share tells you how often a receiver was thrown to, but not whether he deserved it. 
+Targets Over Expected (TOE) uses player-tracking data to measure how open each receiver was when the quarterback threw.
 
-We built **Targets Over Expected (TOE)**: for every route a WR, TE, or RB ran, we use player-tracking data to measure how open he actually was at the instant the quarterback released the ball — his separation from the nearest defender, how fast that defender was closing, and whether anyone was sitting in the throwing lane — and a model converts that into how often a receiver *that* open is normally targeted. 
+We define "open" by three things: how much space he had from the nearest defender, how fast that defender was closing in, and whether anyone was standing in the throwing lane.
 
-TOE is the gap between the targets a receiver drew and the targets his openness earned him, which we report per 100 routes so volume does not distort it: a positive rate means he is fed more than he gets open for (a quarterback's favorite), a negative rate means he gets open but the ball goes elsewhere. 
+TOE then compares how often he actually got the ball with how often a receiver that open usually does.
 
-Across 7,257 throws in the 2021 season (122 games, Weeks 1–8), Davante Adams was the most over-targeted receiver at +17.9 TOE per 100 routes, while Pittsburgh's Eric Ebron was the most open-but-ignored at −11.6 per 100. 
+In the first eight weeks of 2021, Davante Adams got the ball far more than his openness suggested (+17.9 per 100 routes), while Pittsburgh's Eric Ebron kept getting open and getting ignored (−11.6).
 
-For a coach or broadcaster, this separates receivers who earn their volume from those whose production is really the scheme funneling them the ball, and it flags open receivers the passing game is leaving on the field — something no box-score stat can show.
+That gives broadcasters a ready-made storyline for every team, like "this offense runs through one guy" or "their tight end is open and nobody's finding him," and it shows coaches which open receivers they're missing and when a quarterback is forcing throws to his favorite target.
+
+The full analysis and visualization is presented on this tool: https://nfl-toe-dashboard.vercel.app
