@@ -368,14 +368,18 @@ def write_c1(cfg, c1):
 
 
 def build(cfg):
-    """Data stage: write C1, then C2 via play_table.build_c2."""
-    import play_table
-
+    """Data stage: write C1, then C2 via play_table.build_c2 (same events/eligibility)."""
     parts = build_c1(cfg)
     path = write_c1(cfg, parts["c1"])
     print(f"wrote {path} ({len(parts['c1'])} rows) in {parts['runtime_s']}s")
-    play_table.build_c2(cfg, events=parts["events"], elig=parts["elig"],
-                        directions=parts["directions"])
+    try:
+        import play_table
+
+        play_table.build_c2(cfg, events=parts["events"], elig=parts["elig"],
+                            directions=parts["directions"])
+    except (ImportError, TypeError) as exc:
+        print(f"C2 NOT BUILT: play_table.build_c2(cfg, events=, elig=, directions=) "
+              f"unavailable ({type(exc).__name__}: {exc}). C1 only.")
 
 
 if __name__ == "__main__":

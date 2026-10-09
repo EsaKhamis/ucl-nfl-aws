@@ -23,6 +23,7 @@ import contracts_data
 import load
 import snapshot
 import targets
+from config import Config
 
 KEYS = ["gameId", "playId"]
 # One narrow tracking read gives event frames, play direction (los_x) and the
@@ -31,7 +32,8 @@ TRACKING_COLUMNS = ["gameId", "playId", "nflId", "frameId", "team", "playDirecti
 PRESSURE_FLAGS = ["pff_hit", "pff_hurry", "pff_sack"]
 PLAY_COLUMNS = ["possessionTeam", "defensiveTeam", "quarter", "down", "yardsToGo", "gameClock",
                 "preSnapHomeScore", "preSnapVisitorScore", "absoluteYardlineNumber",
-                "pff_passCoverage", "pff_passCoverageType", "pff_playAction", "dropBackType"]
+                "pff_passCoverage", "pff_passCoverageType", "pff_playAction", "dropBackType",
+                "yardlineSide", "yardlineNumber"]
 
 
 def scan_tracking(game_ids):
@@ -77,6 +79,19 @@ def pressured_per_play(scouting):
             .rename("pressured").reset_index())
 
 
+def fill_los_x(df):
+    """Fill missing los_x (absoluteYardlineNumber NA) from yardlineSide/yardlineNumber.
+
+    In standardized coordinates the offense moves toward +x, so LOS_x is
+    10 + yardlineNumber in its own half and 110 - yardlineNumber otherwise.
+    This reproduces add_los_x on all 8,556 plays that have absoluteYardlineNumber;
+    plays.csv has one NA (2021091904/3676, ball at 70.66 at the snap -> 71).
+    """
+    own = df["yardlineSide"].eq(df["possessionTeam"]).to_numpy()
+    derived = np.where(own, 10.0 + df["yardlineNumber"], 110.0 - df["yardlineNumber"])
+    return df.assign(los_x=df["los_x"].fillna(pd.Series(derived, index=df.index)))
+
+
 def score_margin(df):
     """possessionTeam pre-snap score minus defensiveTeam's, with homeTeamAbbr from games.csv."""
     home = df["possessionTeam"].eq(df["homeTeamAbbr"]).to_numpy()
@@ -94,7 +109,7 @@ def build_c2(plays, games=None, scouting=None, players=None, game_ids=None, *,
     If `plays` is a Config (snapshot.build), loads the tables itself and also
     validates and writes cfg.derived_dir/c2_plays.parquet.
     """
-    if hasattr(plays, "derived_dir"):
+    if isinstance(plays, Config):
         return _build_from_cfg(plays, events=events, elig=elig, directions=directions)
 
     t0 = time.time()
@@ -114,12 +129,15 @@ def build_c2(plays, games=None, scouting=None, players=None, game_ids=None, *,
         "passResult", "snap_frameId", "release_frameId", "time_to_throw_s", "n_eligible",
         "target_nflId", "target_source", "is_model_play"]]
 
-    ctx = snapshot.add_line_to_gain_x(load.add_los_x(plays[KEYS + PLAY_COLUMNS], directions))
+    ctx = load.add_los_x(plays[KEYS + PLAY_COLUMNS], directions)
+    n_los_filled = int((ctx["los_x"].isna() & ctx["absoluteYardlineNumber"].isna()).sum())
+    ctx = snapshot.add_line_to_gain_x(fill_los_x(ctx))
     ctx = ctx.merge(games[["gameId", "week", "homeTeamAbbr", "visitorTeamAbbr"]],
                     on="gameId", how="left")
     c2 = (throws.merge(ctx, on=KEYS, how="left")
           .merge(qb_per_play(scouting), on=KEYS, how="left")
-          .merge(pressured_per_play(scouting), on=KEYS, how="left"))
+          .merge(pressured_per_play(scouting), on=KEYS, how="left")
+          .sort_values(KEYS).reset_index(drop=True))
     c2["score_margin"] = score_margin(c2)
     c2["pressured"] = c2["pressured"].fillna(False).astype(bool)
     c2["is_model_play"] = c2["is_model_play"].astype(bool)
@@ -129,7 +147,7 @@ def build_c2(plays, games=None, scouting=None, players=None, game_ids=None, *,
     n_qb = c2["n_qb"].fillna(0).astype(int)
     team_ok = (c2["possessionTeam"].eq(c2["homeTeamAbbr"])
                | c2["possessionTeam"].eq(c2["visitorTeamAbbr"]))
-    c2 = c2[list(contracts_data.C2_SCHEMA)].sort_values(KEYS).reset_index(drop=True)
+    c2 = c2[list(contracts_data.C2_SCHEMA)]
 
     if report is not None:
         sc_keys = scouting[KEYS].drop_duplicates()
@@ -146,6 +164,7 @@ def build_c2(plays, games=None, scouting=None, players=None, game_ids=None, *,
             "pressured_share": round(float(c2["pressured"].mean()), 4) if len(c2) else None,
             "plays_without_scouting": int(no_scouting),
             "possessionTeam_not_home_or_visitor": int((~team_ok).sum()),
+            "plays_los_x_from_yardline": n_los_filled,
             "tracking_load_errors": errors,
             "runtime_s": round(time.time() - t0, 1),
         })

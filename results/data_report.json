@@ -8,20 +8,865 @@
   },
   "count_differences": [],
   "direction_check": {
-    "games": [
-      2021090900
-    ],
+    "games": 122,
     "all_plays": {
-      "n_plays": 97,
-      "ball_near_los_share": 1.0,
-      "sides_split_share": 1.0,
-      "ball_within_1_5_share_info": 0.9588
+      "n_plays": 8533,
+      "ball_near_los_share": 0.992,
+      "sides_split_share": 0.9999,
+      "ball_within_1_5_share_info": 0.9699
     },
     "passResult_C_I_IN": {
-      "n_plays": 93,
-      "ball_near_los_share": 1.0,
-      "sides_split_share": 1.0,
-      "ball_within_1_5_share_info": 0.957
-    }
+      "n_plays": 7544,
+      "ball_near_los_share": 0.9923,
+      "sides_split_share": 0.9999,
+      "ball_within_1_5_share_info": 0.9696
+    },
+    "ball_los_tolerance_yd": 2.5,
+    "info_tolerance_yd": 1.5,
+    "min_share": 0.99,
+    "tracked_plays": 8557,
+    "tracked_plays_without_snap": 24
+  },
+  "events": {
+    "plays": 8557,
+    "passResult_counts": {
+      "C": 4620,
+      "I": 2755,
+      "S": 543,
+      "R": 449,
+      "IN": 190
+    },
+    "candidates_C_I_IN": 7565,
+    "throw_plays": 7541,
+    "exclusions": {
+      "no_release": {
+        "count": 3,
+        "plays": [
+          {
+            "gameId": 2021100303,
+            "playId": 1476,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021100303,
+            "playId": 2503,
+            "passResult": "I"
+          },
+          {
+            "gameId": 2021100303,
+            "playId": 3493,
+            "passResult": "C"
+          }
+        ]
+      },
+      "no_snap": {
+        "count": 21,
+        "plays": [
+          {
+            "gameId": 2021091200,
+            "playId": 4367,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021091202,
+            "playId": 3606,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021091206,
+            "playId": 1296,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021091904,
+            "playId": 1614,
+            "passResult": "I"
+          },
+          {
+            "gameId": 2021091907,
+            "playId": 1857,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021091909,
+            "playId": 3565,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021091912,
+            "playId": 1868,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021092605,
+            "playId": 1911,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021092611,
+            "playId": 1641,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021100302,
+            "playId": 775,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021100302,
+            "playId": 3688,
+            "passResult": "I"
+          },
+          {
+            "gameId": 2021100307,
+            "playId": 4668,
+            "passResult": "I"
+          },
+          {
+            "gameId": 2021100308,
+            "playId": 4330,
+            "passResult": "I"
+          },
+          {
+            "gameId": 2021100313,
+            "playId": 1878,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021100700,
+            "playId": 2963,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021101004,
+            "playId": 3861,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021101706,
+            "playId": 1932,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021102405,
+            "playId": 4101,
+            "passResult": "I"
+          },
+          {
+            "gameId": 2021102408,
+            "playId": 1872,
+            "passResult": "C"
+          },
+          {
+            "gameId": 2021102410,
+            "playId": 3833,
+            "passResult": "C"
+          }
+        ]
+      },
+      "sack": {
+        "count": 543,
+        "plays": [
+          {
+            "gameId": 2021090900,
+            "playId": 2279,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 2631,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 4112,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 4298,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 4346,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 691,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 1393,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 1446,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 3346,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 4103,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091202,
+            "playId": 210,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091202,
+            "playId": 1798,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091202,
+            "playId": 2196,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091202,
+            "playId": 2543,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091202,
+            "playId": 3420,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091202,
+            "playId": 3820,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091203,
+            "playId": 601,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091203,
+            "playId": 722,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091203,
+            "playId": 765,
+            "passResult": "S"
+          },
+          {
+            "gameId": 2021091203,
+            "playId": 1521,
+            "passResult": "S"
+          }
+        ]
+      },
+      "scramble": {
+        "count": 449,
+        "plays": [
+          {
+            "gameId": 2021090900,
+            "playId": 2298,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021090900,
+            "playId": 2330,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021090900,
+            "playId": 3364,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 843,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 2063,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 2145,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 2214,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091200,
+            "playId": 4131,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 345,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 2983,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091201,
+            "playId": 3756,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091204,
+            "playId": 1979,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091204,
+            "playId": 2652,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091204,
+            "playId": 4135,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091204,
+            "playId": 4581,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091205,
+            "playId": 2097,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091205,
+            "playId": 3548,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091206,
+            "playId": 269,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091206,
+            "playId": 439,
+            "passResult": "R"
+          },
+          {
+            "gameId": 2021091206,
+            "playId": 506,
+            "passResult": "R"
+          }
+        ]
+      }
+    },
+    "sack_plays_excluded": 543,
+    "scramble_plays_excluded": 449,
+    "time_to_throw_s": {
+      "min": 1.0,
+      "p25": 2.3,
+      "median": 2.7,
+      "p75": 3.3,
+      "max": 19.2,
+      "n_under_0_5": 0,
+      "n_over_10": 15
+    },
+    "tracking_load_errors": []
+  },
+  "eligibility": {
+    "eligible_routes": 34815,
+    "position_group_counts": {
+      "WR": 20307,
+      "TE": 7978,
+      "RB": 6530
+    },
+    "n_eligible": {
+      "min": 1,
+      "median": 5.0,
+      "max": 5,
+      "distribution": {
+        "1": 4,
+        "2": 59,
+        "3": 594,
+        "4": 1509,
+        "5": 5375
+      }
+    },
+    "pass_route_other_position_on_throw_plays": {
+      "count": 30,
+      "by_position": {
+        "QB": 26,
+        "C": 3,
+        "T": 1
+      }
+    },
+    "pass_route_other_position_all_plays": {
+      "count": 37,
+      "by_position": {
+        "QB": 32,
+        "C": 3,
+        "T": 2
+      }
+    },
+    "pass_route_not_on_possession_team_all_plays": 0
+  },
+  "targets": {
+    "throw_plays": 7541,
+    "matched_targets": 7265,
+    "match_rate": 0.9634,
+    "match_rate_below_85pct": false,
+    "match_status_counts": {
+      "matched": 7265,
+      "no_name": 256,
+      "no_match": 18,
+      "ambiguous": 2
+    },
+    "model_plays": 7257,
+    "not_model_play_reasons": {
+      "no_target_name": 256,
+      "target_no_match": 18,
+      "target_not_eligible: pff_role=Pass Route, officialPosition=QB": 5,
+      "target_ambiguous": 2,
+      "target_not_eligible: pff_role=Pass, officialPosition=QB": 1,
+      "target_not_eligible: pff_role=Pass Block, officialPosition=TE": 1,
+      "target_not_eligible: pff_role=Pass Block, officialPosition=G": 1
+    },
+    "matched_target_not_eligible": {
+      "count": 8,
+      "by_reason": {
+        "target_not_eligible: pff_role=Pass Route, officialPosition=QB": 5,
+        "target_not_eligible: pff_role=Pass, officialPosition=QB": 1,
+        "target_not_eligible: pff_role=Pass Block, officialPosition=TE": 1,
+        "target_not_eligible: pff_role=Pass Block, officialPosition=G": 1
+      },
+      "plays": [
+        {
+          "gameId": 2021092600,
+          "playId": 3516,
+          "target_nflId": 42831,
+          "reason": "target_not_eligible: pff_role=Pass, officialPosition=QB"
+        },
+        {
+          "gameId": 2021100305,
+          "playId": 1975,
+          "target_nflId": 43370,
+          "reason": "target_not_eligible: pff_role=Pass Block, officialPosition=TE"
+        },
+        {
+          "gameId": 2021100306,
+          "playId": 491,
+          "target_nflId": 45244,
+          "reason": "target_not_eligible: pff_role=Pass Route, officialPosition=QB"
+        },
+        {
+          "gameId": 2021100306,
+          "playId": 2611,
+          "target_nflId": 45244,
+          "reason": "target_not_eligible: pff_role=Pass Route, officialPosition=QB"
+        },
+        {
+          "gameId": 2021101008,
+          "playId": 155,
+          "target_nflId": 45244,
+          "reason": "target_not_eligible: pff_role=Pass Route, officialPosition=QB"
+        },
+        {
+          "gameId": 2021101008,
+          "playId": 1074,
+          "target_nflId": 45244,
+          "reason": "target_not_eligible: pff_role=Pass Route, officialPosition=QB"
+        },
+        {
+          "gameId": 2021101008,
+          "playId": 1165,
+          "target_nflId": 45244,
+          "reason": "target_not_eligible: pff_role=Pass Route, officialPosition=QB"
+        },
+        {
+          "gameId": 2021102406,
+          "playId": 1433,
+          "target_nflId": 43453,
+          "reason": "target_not_eligible: pff_role=Pass Block, officialPosition=G"
+        }
+      ]
+    },
+    "multiple_pass_phrases": {
+      "plays": 38,
+      "names_disagree": 0
+    },
+    "round_trip": {
+      "checked": 82923,
+      "passed": 82679,
+      "pass_rate": 0.997058,
+      "skipped_non_unique_key": 28,
+      "failures": [
+        {
+          "gameId": 2021091202,
+          "playId": 88,
+          "nflId": 39684,
+          "displayName": "Greg Van Roten",
+          "target_name_raw": "G.Van"
+        }
+      ]
+    },
+    "samples_unmatched": [
+      {
+        "gameId": 2021101703,
+        "playId": 993,
+        "match_status": "no_name",
+        "playDescription": "(1:13) Aa.Rodgers pass incomplete short right [M.Edwards]. PENALTY on CHI-M.Edwards, Unsportsmanlike Conduct, 15 yards, enforced at GB 20."
+      },
+      {
+        "gameId": 2021091202,
+        "playId": 3490,
+        "match_status": "no_name",
+        "playDescription": "(6:18) S.Darnold pass incomplete short right."
+      },
+      {
+        "gameId": 2021091906,
+        "playId": 1710,
+        "match_status": "no_name",
+        "playDescription": "(:33) (Shotgun) M.Jones pass incomplete short left."
+      },
+      {
+        "gameId": 2021092602,
+        "playId": 4058,
+        "match_status": "no_name",
+        "playDescription": "(:06) (Shotgun) L.Jackson pass incomplete short left. ball thrown away"
+      },
+      {
+        "gameId": 2021101704,
+        "playId": 1210,
+        "match_status": "no_name",
+        "playDescription": "(10:49) (Shotgun) J.Goff pass incomplete short left. Penalty on DET-P.Sewell, Offensive Holding, declined."
+      },
+      {
+        "gameId": 2021101800,
+        "playId": 2620,
+        "match_status": "no_name",
+        "playDescription": "(8:05) R.Tannehill pass incomplete short right [H.Phillips]."
+      },
+      {
+        "gameId": 2021092611,
+        "playId": 2428,
+        "match_status": "no_name",
+        "playDescription": "(12:10) T.Brady pass incomplete short right."
+      },
+      {
+        "gameId": 2021102407,
+        "playId": 3491,
+        "match_status": "no_name",
+        "playDescription": "(4:16) (No Huddle, Shotgun) J.Hurts pass incomplete deep right."
+      },
+      {
+        "gameId": 2021100310,
+        "playId": 3268,
+        "match_status": "no_name",
+        "playDescription": "(10:34) R.Wilson pass incomplete short left [N.Bosa]."
+      },
+      {
+        "gameId": 2021101704,
+        "playId": 3902,
+        "match_status": "no_name",
+        "playDescription": "(2:54) (Shotgun) J.Goff pass incomplete deep left. Ball thrown away."
+      }
+    ]
+  },
+  "players": {
+    "route_definition": "Eligible_Receiver on a Model_Play",
+    "route_minimum_defaults": {
+      "Route_Minimum": 100,
+      "Split_Route_Minimum": 40,
+      "Team_Route_Minimum": 50
+    },
+    "model_plays": {
+      "overall": {
+        "distinct_receivers": 464,
+        "routes": 33569,
+        "routes_per_receiver": {
+          "p25": 16.0,
+          "p50": 50.0,
+          "p75": 110.0,
+          "p90": 177.7,
+          "max": 265
+        },
+        "receivers_ge_100_routes": 136,
+        "receivers_ge_40_routes": 262,
+        "receivers_ge_50_routes": 232
+      },
+      "by_position_group": {
+        "RB": {
+          "distinct_receivers": 138,
+          "routes": 6310,
+          "routes_per_receiver": {
+            "p25": 10.0,
+            "p50": 34.5,
+            "p75": 74.75,
+            "p90": 108.3,
+            "max": 185
+          },
+          "receivers_ge_100_routes": 16,
+          "receivers_ge_40_routes": 64,
+          "receivers_ge_50_routes": 51
+        },
+        "TE": {
+          "distinct_receivers": 117,
+          "routes": 7700,
+          "routes_per_receiver": {
+            "p25": 16.0,
+            "p50": 47.0,
+            "p75": 97.0,
+            "p90": 156.4,
+            "max": 243
+          },
+          "receivers_ge_100_routes": 29,
+          "receivers_ge_40_routes": 62,
+          "receivers_ge_50_routes": 54
+        },
+        "WR": {
+          "distinct_receivers": 209,
+          "routes": 19559,
+          "routes_per_receiver": {
+            "p25": 23.0,
+            "p50": 83.0,
+            "p75": 161.0,
+            "p90": 206.6,
+            "max": 265
+          },
+          "receivers_ge_100_routes": 91,
+          "receivers_ge_40_routes": 136,
+          "receivers_ge_50_routes": 127
+        }
+      }
+    },
+    "throw_plays": {
+      "overall": {
+        "distinct_receivers": 465,
+        "routes": 34815,
+        "routes_per_receiver": {
+          "p25": 17.0,
+          "p50": 53.0,
+          "p75": 112.0,
+          "p90": 181.8,
+          "max": 272
+        },
+        "receivers_ge_100_routes": 141,
+        "receivers_ge_40_routes": 268,
+        "receivers_ge_50_routes": 245
+      },
+      "by_position_group": {
+        "RB": {
+          "distinct_receivers": 139,
+          "routes": 6530,
+          "routes_per_receiver": {
+            "p25": 10.5,
+            "p50": 34.0,
+            "p75": 77.5,
+            "p90": 110.6,
+            "max": 196
+          },
+          "receivers_ge_100_routes": 20,
+          "receivers_ge_40_routes": 65,
+          "receivers_ge_50_routes": 54
+        },
+        "TE": {
+          "distinct_receivers": 117,
+          "routes": 7978,
+          "routes_per_receiver": {
+            "p25": 16.0,
+            "p50": 50.0,
+            "p75": 99.0,
+            "p90": 162.2,
+            "max": 256
+          },
+          "receivers_ge_100_routes": 29,
+          "receivers_ge_40_routes": 63,
+          "receivers_ge_50_routes": 60
+        },
+        "WR": {
+          "distinct_receivers": 209,
+          "routes": 20307,
+          "routes_per_receiver": {
+            "p25": 23.0,
+            "p50": 85.0,
+            "p75": 163.0,
+            "p90": 213.0,
+            "max": 272
+          },
+          "receivers_ge_100_routes": 92,
+          "receivers_ge_40_routes": 140,
+          "receivers_ge_50_routes": 131
+        }
+      }
+    },
+    "top_receivers": [
+      {
+        "nflId": 44896,
+        "displayName": "Chris Godwin",
+        "position_group": "WR",
+        "team": "TB",
+        "routes": 265,
+        "targets": 52,
+        "throw_play_routes": 272
+      },
+      {
+        "nflId": 41233,
+        "displayName": "Mike Evans",
+        "position_group": "WR",
+        "team": "TB",
+        "routes": 261,
+        "targets": 59,
+        "throw_play_routes": 268
+      },
+      {
+        "nflId": 40011,
+        "displayName": "Travis Kelce",
+        "position_group": "TE",
+        "team": "KC",
+        "routes": 243,
+        "targets": 71,
+        "throw_play_routes": 256
+      },
+      {
+        "nflId": 47859,
+        "displayName": "Terry McLaurin",
+        "position_group": "WR",
+        "team": "WAS",
+        "routes": 243,
+        "targets": 72,
+        "throw_play_routes": 246
+      },
+      {
+        "nflId": 48097,
+        "displayName": "Jakobi Meyers",
+        "position_group": "WR",
+        "team": "NE",
+        "routes": 243,
+        "targets": 66,
+        "throw_play_routes": 248
+      },
+      {
+        "nflId": 47791,
+        "displayName": "T.J. Hockenson",
+        "position_group": "TE",
+        "team": "DET",
+        "routes": 242,
+        "targets": 66,
+        "throw_play_routes": 253
+      },
+      {
+        "nflId": 53435,
+        "displayName": "Jaylen Waddle",
+        "position_group": "WR",
+        "team": "MIA",
+        "routes": 231,
+        "targets": 53,
+        "throw_play_routes": 235
+      },
+      {
+        "nflId": 46093,
+        "displayName": "D.J. Moore",
+        "position_group": "WR",
+        "team": "CAR",
+        "routes": 229,
+        "targets": 73,
+        "throw_play_routes": 239
+      },
+      {
+        "nflId": 43808,
+        "displayName": "Robby Anderson",
+        "position_group": "WR",
+        "team": "CAR",
+        "routes": 228,
+        "targets": 49,
+        "throw_play_routes": 235
+      },
+      {
+        "nflId": 44881,
+        "displayName": "Cooper Kupp",
+        "position_group": "WR",
+        "team": "LA",
+        "routes": 227,
+        "targets": 84,
+        "throw_play_routes": 228
+      },
+      {
+        "nflId": 46109,
+        "displayName": "Courtland Sutton",
+        "position_group": "WR",
+        "team": "DEN",
+        "routes": 224,
+        "targets": 60,
+        "throw_play_routes": 230
+      },
+      {
+        "nflId": 40024,
+        "displayName": "Keenan Allen",
+        "position_group": "WR",
+        "team": "LAC",
+        "routes": 223,
+        "targets": 61,
+        "throw_play_routes": 229
+      },
+      {
+        "nflId": 43584,
+        "displayName": "Kalif Raymond",
+        "position_group": "WR",
+        "team": "DET",
+        "routes": 223,
+        "targets": 36,
+        "throw_play_routes": 232
+      },
+      {
+        "nflId": 40488,
+        "displayName": "Adam Thielen",
+        "position_group": "WR",
+        "team": "MIN",
+        "routes": 220,
+        "targets": 51,
+        "throw_play_routes": 232
+      },
+      {
+        "nflId": 45267,
+        "displayName": "Tim Patrick",
+        "position_group": "WR",
+        "team": "DEN",
+        "routes": 220,
+        "targets": 42,
+        "throw_play_routes": 226
+      }
+    ]
+  },
+  "checks": {
+    "throw_plays_plus_exclusions_eq_plays": true,
+    "model_le_matched_le_throw": true,
+    "events_throw_plays_eq_targets_throw_plays": true,
+    "model_routes_eq_elig_rows_on_model_plays": true,
+    "group_routes_sum_eq_overall": true,
+    "throw_routes_eq_elig_rows": true,
+    "passResult_matches_reference": true,
+    "direction_C_I_IN_ge_99pct": true,
+    "match_rate_ge_85pct": true,
+    "no_tracking_load_errors": true
+  },
+  "full_report_runtime_s": {
+    "tracking_scan": 4.0,
+    "total": 4.5,
+    "workers": 6
   }
 }
