@@ -15,7 +15,7 @@ Every task has one owner. Run only your own tasks, in order, and stop at each ch
   - Running `python run.py --fixtures --stage data` writes the fixtures to `out/fixtures/`, and they pass validation.
   - _Requirements: 9.1, 9.2, 9.3_
 
-- [ ] 3. Add the schema check and source counts to `load.py`
+- [x] 3. Add the schema check and source counts to `load.py`
   - Add the Appendix A column check, which stops the run and lists every missing column.
   - Read "NA" as missing.
   - Count the source rows and warn on any difference from the reference copy.

@@ -1,0 +1,27 @@
+{
+  "counts": {
+    "games": 122,
+    "plays": 8557,
+    "players": 1679,
+    "scouting_rows": 188254,
+    "tracking_files": 122
+  },
+  "count_differences": [],
+  "direction_check": {
+    "games": [
+      2021090900
+    ],
+    "all_plays": {
+      "n_plays": 97,
+      "ball_near_los_share": 1.0,
+      "sides_split_share": 1.0,
+      "ball_within_1_5_share_info": 0.9588
+    },
+    "passResult_C_I_IN": {
+      "n_plays": 93,
+      "ball_near_los_share": 1.0,
+      "sides_split_share": 1.0,
+      "ball_within_1_5_share_info": 0.957
+    }
+  }
+}
