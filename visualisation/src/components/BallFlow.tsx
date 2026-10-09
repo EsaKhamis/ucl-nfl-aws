@@ -143,12 +143,12 @@ export function BallFlow() {
   const hasFlow = data.nodes.length > 0 && data.links.length > 0;
 
   return (
-    <section className="rounded-xl border border-edge bg-panel p-6">
+    <section className="rounded-xl border border-slate-700 bg-panel p-6">
       <div className="mb-4">
         <h2 className="text-2xl font-black tracking-tight text-slate-50">
           Where the Ball Goes Instead
         </h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-base font-semibold text-slate-200">
           When these receivers are ignored (rose), the targets flow to who&apos;s
           actually fed (cyan).
         </p>
@@ -164,7 +164,7 @@ export function BallFlow() {
       )}
 
       {!loading && !error && !hasFlow && (
-        <p className="py-24 text-center text-xl font-bold text-slate-400">
+        <p className="py-24 text-center text-xl font-bold text-slate-200">
           No ignored-receiver flow for the current filters.
         </p>
       )}
@@ -182,22 +182,25 @@ export function BallFlow() {
             nodeSpacing={28}
             nodeBorderWidth={0}
             nodeBorderRadius={3}
-            linkOpacity={0.45}
-            linkHoverOpacity={0.75}
+            // nivo defaults to "multiply", which darkens bands to near-black on
+            // the dark panel. "normal" keeps the rose/cyan bands bright.
+            linkBlendMode="normal"
+            linkOpacity={0.7}
+            linkHoverOpacity={0.95}
             linkContract={2}
             enableLinkGradient
             labelPosition="outside"
             labelOrientation="horizontal"
             labelPadding={12}
-            labelTextColor="#e2e8f0"
+            labelTextColor="#f8fafc"
             theme={{
-              text: { fontSize: 14, fill: "#e2e8f0" },
+              text: { fontSize: 14, fill: "#f8fafc" },
               labels: { text: { fontWeight: 800, fontSize: 15 } },
               tooltip: {
                 container: {
                   background: "#05070d",
-                  color: "#e2e8f0",
-                  border: "1px solid #1e2636",
+                  color: "#f8fafc",
+                  border: "1px solid #475569",
                   fontSize: 13,
                 },
               },
