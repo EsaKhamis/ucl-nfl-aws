@@ -6,7 +6,7 @@ We define "open" by three things: how much space he had from the nearest defende
 
 TOE then compares how often he actually got the ball with how often a receiver that open usually does.
 
-In the first eight weeks of 2021, Davante Adams got the ball far more than his openness suggested (+17.9 per 100 routes), while Pittsburgh's Eric Ebron kept getting open and getting ignored (−11.6).
+We've analysed this for every team, each game, and for the whole season. In the first eight weeks of 2021, Davante Adams got the ball far more than his openness suggested (+17.9 per 100 routes), while Pittsburgh's Eric Ebron kept getting open and getting ignored (−11.6).
 
 That gives broadcasters a ready-made storyline for every team, like "this offense runs through one guy" or "their tight end is open and nobody's finding him," and it shows coaches which open receivers they're missing and when a quarterback is forcing throws to his favorite target.
 
