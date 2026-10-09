@@ -367,19 +367,54 @@ def write_c1(cfg, c1):
     return path
 
 
+def integrity_checks(c1, c2, plays):
+    """Req 9.4 and 9.5 on the real C1/C2 tables.
+
+    9.4: every C2 (gameId, playId) exists in plays.csv and in C1.
+    9.5: every Model_Play target_nflId is an is_eligible row in C1 for that play.
+    Returns the counts; raises AssertionError listing every failed rule.
+    """
+    c2_keys = c2[KEYS]
+    in_plays = c2_keys.merge(plays[KEYS].drop_duplicates(), on=KEYS)
+    in_c1 = c2_keys.merge(c1[KEYS].drop_duplicates(), on=KEYS)
+    model = c2.loc[c2["is_model_play"], KEYS + ["target_nflId"]]
+    elig = c1.loc[c1["is_eligible"], KEYS + ["nflId"]].drop_duplicates()  # same across offsets
+    ok = model.merge(elig, left_on=KEYS + ["target_nflId"], right_on=KEYS + ["nflId"])
+    res = {
+        "c2_plays": int(len(c2_keys)),
+        "c2_plays_missing_from_plays_csv": int(len(c2_keys) - len(in_plays)),  # Req 9.4
+        "c2_plays_missing_from_c1": int(len(c2_keys) - len(in_c1)),            # Req 9.4
+        "model_plays": int(len(model)),
+        "model_targets_not_eligible_in_c1": int(len(model) - len(ok)),         # Req 9.5
+    }
+    failed = [f"{k}={v}" for k, v in res.items() if k.endswith(("_csv", "_c1")) and v]
+    if failed:
+        raise AssertionError("Data integrity failed (Req 9.4/9.5): " + ", ".join(failed))
+    return res
+
+
 def build(cfg):
-    """Data stage: write C1, then C2 via play_table.build_c2 (same events/eligibility)."""
+    """Data stage: write C1, then C2, assert Req 9.4/9.5, then write the Data_Report."""
+    import play_table
+    import report
+
     parts = build_c1(cfg)
     path = write_c1(cfg, parts["c1"])
     print(f"wrote {path} ({len(parts['c1'])} rows) in {parts['runtime_s']}s")
-    try:
-        import play_table
+    c2 = play_table.build_c2(cfg, events=parts["events"], elig=parts["elig"],
+                             directions=parts["directions"])
 
-        play_table.build_c2(cfg, events=parts["events"], elig=parts["elig"],
-                            directions=parts["directions"])
-    except (ImportError, TypeError) as exc:
-        print(f"C2 NOT BUILT: play_table.build_c2(cfg, events=, elig=, directions=) "
-              f"unavailable ({type(exc).__name__}: {exc}). C1 only.")
+    integrity = integrity_checks(parts["c1"], c2, load.load_plays())
+    print(f"integrity OK (Req 9.4/9.5): {integrity}")
+
+    # Data_Report for the run.py path: the full report plus this build's own results.
+    rep = report.build_full_report(cfg.games)
+    rep["integrity"] = integrity
+    rep["c1_build"] = {"rows": int(len(parts["c1"])), "runtime_s": parts["runtime_s"],
+                       "tracking_load_errors": parts["errors"],          # Req 8.5
+                       "frame_counts": parts["frame_counts"]}            # Req 6.5
+    out = report.write_full_report(rep, cfg.outputs_dir / "data_report.json")
+    print(f"wrote {out}")
 
 
 if __name__ == "__main__":
