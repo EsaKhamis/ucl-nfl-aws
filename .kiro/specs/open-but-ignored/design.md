@@ -58,7 +58,9 @@ class Config:
     pre_release_offset: int = 4         # 3, 4 or 5 (Req 12.4)
     open_mode: str = "most_open"        # or "threshold"
     open_threshold: float = 3.0         # yards; set from the data on the day
-    closing_horizon_s: float = 0.5      # Openness_Score horizon
+    closing_horizon_s: float = 0.5      # Openness_Score closing-speed horizon
+    lambda_lane: float = 0.5            # Openness_Score lane-penalty weight (0 disables)
+    lane_cushion: float = 2.0           # yards; defender within this of the throwing lane is penalized
     route_minimum: int = 100
     split_route_minimum: int = 40
     team_route_minimum: int = 50
@@ -104,9 +106,12 @@ Each stage exposes `build(cfg: Config) -> None`: `snapshot.build`, `aggregate.bu
 - **Velocity:** `vx = s·sin(dir°)`, `vy = s·cos(dir°)`. Confirm on one frame that a player running toward +x has `dir` ≈ 90.
 - **Separation:** `min over defenders ‖p_d − p_r‖`. Vectorize per frame with numpy broadcasting.
 - **Closing_Speed:** `−(p_d − p_r)·(v_d − v_r) / ‖p_d − p_r‖` for the Nearest_Defender. Positive means closing.
-- **Openness_Score:** `separation − closing_horizon_s × closing_speed`, the projected separation 0.5 s later.
-  - It increases with separation and decreases with closing speed, which satisfies Req 12.2 and 12.3.
-  - Distances and dot products survive the 180° flip, which satisfies Req 11.5.
+- **Lane_Penalty:** `max(0, lane_cushion − perp_dist)`, where `perp_dist` is the perpendicular distance from the Nearest_Defender to the receiver→QB line. A defender in the throwing lane (small `perp_dist`) gives a large penalty; a defender off to the side gives 0. Compute `perp_dist` as `|(p_d − p_r) × û|` where `û` is the unit vector from receiver to QB (2-D cross product magnitude).
+- **Openness_Score (composite):** `separation − closing_horizon_s × closing_speed − lambda_lane × lane_penalty`. The authoritative definition lives in `metrics/metrics_plan.md`.
+  - It increases with separation (Req 12.2), decreases with closing speed (Req 12.3), and decreases as the Nearest_Defender moves into the throwing lane (Req 12.9), each holding the other inputs fixed.
+  - Separation, projected distances and dot products all survive the 180° flip, which satisfies Req 11.5.
+  - Defaults: `closing_horizon_s = 0.5`, `lambda_lane = 0.5`, `lane_cushion = 2.0`. Setting `lambda_lane = 0` recovers the earlier separation-minus-closing-speed score as a safe fallback.
+  - C3 exposes the lane input as diagnostic columns `lane_penalty_pre` and `lane_penalty_rel`.
 - **Depth, depth_vs_sticks, dist_from_qb:** at the Pre_Release_Offset, as in Req 13. The QB is the `qb_nflId` row in C1.
 - **Rusher_Distance:** the minimum distance from the QB to any `pff_role` "Pass Rush" row at offset 0.
 - **Model:** sklearn `make_pipeline(StandardScaler(), LogisticRegression())`.
