@@ -1,0 +1,7 @@
+{
+  "task_id": "task-toe-dashboard",
+  "task_description": "Build a production-ready single-page Next.js dashboard for NFL receiver Target Over Expectation (TOE) analytics for broadcasters: a hero scatter, two leaderboards, 32 team-tendency panels, a Sankey ball-flow, a coverage profile, a sticky live-broadcast filter bar, and a Story Mode toggle. All data in a standalone, swappable public/data/receivers.json produced by a committed generator script. Must pass npm install and npm run build with no errors.",
+  "status": "completed",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
+  "blocked_reason": null
+}
