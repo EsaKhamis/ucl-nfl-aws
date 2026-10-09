@@ -40,7 +40,7 @@ Every task has one owner. Run only your own tasks, in order, and stop at each ch
   - Tell Dev 2 and Dev 3 when the files are ready.
   - _Requirements: 6.1–6.5, 7.1–7.5, 9.6_
 
-- [ ] 7. Run all 122 games and write the Data_Report (by 11:30)
+- [x] 7. Run all 122 games and write the Data_Report (by 11:30)
   - Process the games one at a time. Use a process pool if the run takes over 10 minutes.
   - Catch tracking files that fail to load, and continue with the rest.
   - Write the integrity shares (Req 2.7, 2.8), the referential-integrity asserts (Req 9.4, 9.5) and `results/data_report.json`.

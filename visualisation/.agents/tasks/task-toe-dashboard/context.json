@@ -1,0 +1,46 @@
+{
+  "project_type": "Greenfield single-page web dashboard. Next.js (App Router) + React + TypeScript client-rendered dashboard. The Next.js app root IS c:\\Users\\yousu\\OneDrive\\Documents\\GitHub\\visualisation (NOT a subfolder). Directory started empty except an empty plan.md.",
+  "language": "TypeScript (React .tsx), plus a plain .mjs Node script for data generation.",
+  "build_system": "npm + Next.js build. Node v22.17.0 and npm 10.9.2 confirmed installed. Windows / PowerShell environment — do NOT leave a dev server running; use `npm run build` as the primary gate and only a short-lived start/stop dev check.",
+  "test_framework": "No formal test framework required by the task. Verification is `npm run build` (the real gate) plus a short-lived `npm run dev` smoke check and small Node assertion scripts (scripts/check-*.mjs) for data/logic integrity. If a coder adds tests, use vitest; it is optional.",
+  "build_command": "npm run build",
+  "test_command": "npm run build  (plus `node scripts/check-data.mjs` and `node scripts/check-logic.mjs` for data/logic integrity; optional vitest)",
+  "verification_instructions": "1) From c:\\Users\\yousu\\OneDrive\\Documents\\GitHub\\visualisation run `npm install`. 2) Run `npm run build` and confirm it exits 0 with no type or build errors. 3) Short-lived dev check only: start `npm run dev` in the background, wait a few seconds, fetch the page (or confirm compile with no runtime/hydration errors), then STOP the dev server — never leave it running on Windows/PowerShell. 4) Confirm public/data/receivers.json loads and all 5 sections render; each filter (Week, Position, Coverage, Game) visibly changes output.",
+  "snapshot_or_generated_files": "public/data/receivers.json is the committed REAL dataset (schemaVersion '1.0.0-real', ~468 players / 2537 rows, weeks 1-8), built by scripts/build-real-data.mjs from the Big Data Bowl PFF/play CSVs in the sibling ucl-nfl-aws repo. It is the source of truth and MUST be committed; do NOT overwrite it with synthetic data. scripts/generate-data.mjs is a FALLBACK/DEMO synthetic generator (wired as `npm run generate-data`) that writes a SEPARATE file public/data/receivers.sample.json (same shape) and never touches receivers.json. The real expectation model is a route-participation baseline (expectedTargetShare = routesRun/teamRoutes(week)); expectationModel.a/.b in the file (a=0.085037, b=0.067407) are the fitted linear coefficients used only for the scatter's reference line.",
+  "environment_constraints": "Windows + PowerShell. Never leave a dev server running (kill it after the short smoke check). Pin React 18 + Recharts 2.x to avoid the documented React-19/Recharts non-rendering SVG bug. Pin Next.js 15 App Router. Tailwind 3.x. @nivo/sankey (+ @nivo/core) only for the ball-flow Sankey; Recharts for every other chart.",
+  "contribution_requirements": "No AGENTS.md/CONTRIBUTING found. Conventions: App Router under app/, source under src/ with import alias @/*. Keep plan.md until README.md replaces it. Commit locally on the working branch after each feature; never push. The committed receivers.json must already exist after FEAT-001.",
+  "key_patterns": "Dark, high-contrast broadcast-monitor aesthetic: big numbers, bold player names, large labels, minimal noise, desktop-first (~1920px). All data loaded at runtime via fetch('/data/receivers.json') inside a single DashboardProvider context exposing raw rows + filter state + memoized filtered dataset + story-mode flag; every section reads useDashboard() so filters apply consistently. TOE/expectation/story-hook logic centralized in src/lib/toe.ts and src/lib/stories.ts. TS interface in src/lib/types.ts mirrors the JSON exactly.",
+  "relevant_files": [
+    "package.json (scripts: dev, build, start, lint, generate-data)",
+    "app/layout.tsx, app/page.tsx, app/globals.css",
+    "src/lib/types.ts (ReceiverWeekRow, ReceiversFile, ExpectationModel, enums)",
+    "src/lib/toe.ts (expectedTargetShare, toe, concentration/specialist classifiers)",
+    "src/lib/stories.ts (deriveStoryHook, top-narrative selection for Story Mode)",
+    "src/lib/filters.ts (applyFilters)",
+    "src/context/DashboardProvider.tsx, src/hooks/useDashboard.ts",
+    "src/components/FilterBar.tsx, HeadlineChart.tsx, Leaderboards.tsx, TeamPanels.tsx, BallFlow.tsx, CoverageProfile.tsx, StoryMode.tsx",
+    "scripts/generate-data.mjs, scripts/check-data.mjs, scripts/check-logic.mjs",
+    "public/data/receivers.json",
+    "README.md"
+  ],
+  "directory_structure": "Repo root = Next.js app root. app/ = App Router entry (layout, page, globals.css). src/lib = types + TOE/story/filter logic. src/context + src/hooks = data-loading/filtering layer. src/components = the 5 sections + FilterBar + StoryMode. scripts/ = data generator + integrity checks. public/data/receivers.json = the standalone swappable dataset. .agents/tasks/ = planning + FEAT artifacts + review.json gate (NOT part of the app).",
+  "data_model": {
+    "file_shape": "{ schemaVersion:string (real file = '1.0.0-real'), generatedAt:string, expectationModel:{ formula:string, a:number, b:number }, receivers: ReceiverWeekRow[] }",
+    "row_shape": "ReceiverWeekRow = { playerId:string, playerName:string, team:string(abbrev), position:'WR'|'TE'|'RB', week:number, opponent:string(abbrev), gameId:string, openRate:0-1, targetShare:0-1, expectedTargetShare:0-1, toe:number(=targetShare-expectedTargetShare), openRateVsMan:0-1, openRateVsZone:0-1, targetShareVsMan:0-1, targetShareVsZone:0-1, routesRun:number, targets:number, receptions:number, yards:number }",
+    "shape_choice": "Per-week rows (one row per player per week, weeks 1-8). Week filter and the Current Game/matchup quick filter work directly off week+gameId+opponent on each row. NOTE on gameId in the REAL data: it is the game key (e.g. '2021091207'), stable per game but NOT week-prefixed; availableGames(rows, week) scopes it per week. Field names/types are identical to src/lib/types.ts ReceiverWeekRow (verified against the real file).",
+    "expectation_formula": "REAL data: per-row expectedTargetShare is a route-participation baseline = routesRun / teamRoutes(week), already stored on each row; toe = targetShare - expectedTargetShare (also stored). LATER FEATS MUST read expectedTargetShare and toe FROM THE ROW — do NOT recompute from a+b*openRate. The linear a/b (receivers.json.expectationModel, a=0.085037 b=0.067407, mirrored in src/lib/toe.ts defaultModel) is used ONLY to draw the headline scatter's diagonal expectation reference line (expectedTargetShareLine(openRate)) and as a fallback.",
+    "consistency_rules": "Validated by scripts/check-data.mjs: exactly 32 real team abbreviations present (ARI ATL BAL BUF CAR CHI CIN CLE DAL DEN DET GB HOU IND JAX KC LV LAC LAR MIA MIN NE NO NYG NYJ PHI PIT SF SEA TB TEN WAS); weeks 1-8 all present; 50-1200 distinct players (real file has ~468); every row has all fields with correct types; all *Rate/*Share in [0,1]; receptions<=targets<=routesRun; toe == targetShare-expectedTargetShare within 5e-4 (rows rounded to 4dp). The real data spans WR/TE/RB and naturally includes alpha WR / slot / deep threat / checkdown RB / ignored role-player patterns.",
+    "swap_in_real_data": "receivers.json ALREADY IS real data. To swap a different real feed in, replace public/data/receivers.json with a file of the same wrapper shape (same column names). No code changes. If the expectation model's a/b change, update expectationModel.a/.b in the JSON (and the mirror in src/lib/toe.ts defaultModel used for the reference line). The synthetic fallback lives at public/data/receivers.sample.json via `npm run generate-data`."
+  },
+  "stack_versions": {
+    "next": "^15 (App Router)",
+    "react": "^18",
+    "react-dom": "^18",
+    "typescript": "^5",
+    "tailwindcss": "^3",
+    "recharts": "^2 (all standard charts)",
+    "@nivo/sankey + @nivo/core": "latest (ball-flow Sankey only)",
+    "rationale": "React 18 + Recharts 2.x avoids the documented React-19/Recharts SVG-not-rendering bug that needs react-is overrides; most battle-tested broadcast-chart combo."
+  },
+  "stop_condition_contract": "The convergence loop stops when c:\\Users\\yousu\\OneDrive\\Documents\\GitHub\\visualisation\\.agents\\tasks\\review.json has jsonPath `verdict` == `APPROVED`. The reviewer writes that file LAST every iteration with verdict APPROVED or CHANGES_REQUESTED."
+}

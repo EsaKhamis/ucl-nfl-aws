@@ -865,8 +865,29 @@
     "no_tracking_load_errors": true
   },
   "full_report_runtime_s": {
-    "tracking_scan": 4.0,
-    "total": 4.5,
+    "tracking_scan": 4.3,
+    "total": 4.9,
     "workers": 6
+  },
+  "integrity": {
+    "c2_plays": 7541,
+    "c2_plays_missing_from_plays_csv": 0,
+    "c2_plays_missing_from_c1": 0,
+    "model_plays": 7257,
+    "model_targets_not_eligible_in_c1": 0
+  },
+  "c1_build": {
+    "rows": 1040658,
+    "runtime_s": 14.8,
+    "tracking_load_errors": [],
+    "frame_counts": {
+      "frames_checked": 45246,
+      "frames_flagged": 0,
+      "plays_flagged": 0,
+      "player_count_distribution": {
+        "22": 45246
+      },
+      "flagged": []
+    }
   }
 }
