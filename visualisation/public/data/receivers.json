@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0.0-tracking",
-  "generatedAt": "2026-10-09T11:03:09.748Z",
+  "generatedAt": "2026-10-09T11:24:56.203Z",
   "expectationModel": {
     "formula": "Per row: expectedTargetShare = sum(xTarget) / routesRun, where xTarget is a logistic expected-target model on pre-release (0.4 s) tracking features (openness_pre, depth, dist_from_qb, rusher_distance x depth, rusher_distance x dist_from_qb), normalized to sum to 1 within each play. openRate = share of routes where the receiver was the most open on the play; targetShare = targets / routesRun. a/b: routes-weighted least-squares line expectedTargetShare ~ a + b*openRate over the receiver-week rows, an approximation used only for the chart's reference line.",
     "a": 0.205064,
