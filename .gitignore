@@ -1,0 +1,10 @@
+# # Raw data and generated outputs (tracking alone is ~811 MB)
+# data/
+# out/
+
+# # Python
+# .venv/
+# __pycache__/
+# *.pyc
+# .ipynb_checkpoints/
+# .DS_Store
