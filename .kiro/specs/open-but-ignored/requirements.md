@@ -42,7 +42,7 @@ Priority tags: **P0** is needed for the submission. **P1** is supporting work, d
 **Components**
 
 - **Pipeline**: The whole Python project, run end to end by one command, from source CSVs to Outputs_Dir.
-- **Config**: The single set of run parameters (paths, game subset, Pre_Release_Offset, Open_Mode, Open_Threshold, Route_Minimum, Split_Route_Minimum, Team_Route_Minimum, optional-feature switches).
+- **Config**: The single set of run parameters (paths, game subset, Pre_Release_Offset, Open_Mode, Open_Threshold, Closing_Horizon_s, Lambda_Lane, Lane_Cushion, Route_Minimum, Split_Route_Minimum, Team_Route_Minimum, optional-feature switches).
 - **Data_Loader**: The component that loads and schema-checks the source CSVs.
 - **Direction_Standardizer**: The component that converts tracking coordinates so the offense always moves toward increasing x.
 - **Event_Locator**: The component that finds the Snap_Frame and Release_Frame of each play and classifies Throw_Plays.
@@ -83,7 +83,10 @@ Priority tags: **P0** is needed for the submission. **P1** is supporting work, d
 - **Nearest_Defender**: The defensive player closest to an Eligible_Receiver at a given frame.
 - **Separation**: The Euclidean distance in yards from an Eligible_Receiver to the Nearest_Defender.
 - **Closing_Speed**: The rate in yards per second at which the distance between an Eligible_Receiver and the Nearest_Defender is shrinking. Positive means closing.
-- **Openness_Score**: One number per Route combining Separation and Closing_Speed; higher means more open.
+- **Lane_Penalty**: `max(0, Lane_Cushion − perp_dist)`, where `perp_dist` is the perpendicular distance in yards from the Nearest_Defender to the straight line from the Eligible_Receiver to the QB. Zero when the defender is at least Lane_Cushion yards off the throwing lane; largest when the defender sits directly in the lane.
+- **Lambda_Lane**: The non-negative weight on Lane_Penalty in the Openness_Score (Config, default 0.5; 0 disables the lane term).
+- **Lane_Cushion**: The lane half-width in yards within which a defender incurs a Lane_Penalty (Config, default 2.0).
+- **Openness_Score**: One number per Route, in yards, combining Separation, Closing_Speed and Lane_Penalty as `Separation − Closing_Horizon_s × Closing_Speed − Lambda_Lane × Lane_Penalty`; higher means more open. The authoritative formula and rationale are in `metrics/metrics_plan.md`.
 - **Most_Open**: The Eligible_Receiver with the highest Openness_Score on a Model_Play at the Pre_Release_Offset, ties broken by lowest `nflId`.
 - **Open_Mode**: "most_open" (default) or "threshold".
 - **Open_Threshold**: The Separation in yards above which a Route is open in "threshold" mode, chosen from the data on the day.
@@ -163,8 +166,9 @@ One row per Route on a Model_Play. Key: (`gameId`, `playId`, `nflId`).
 | possessionTeam, defensiveTeam | str | |
 | coverage_type, coverage_family | str, nullable | |
 | down, yardsToGo | int | |
-| separation_pre, closing_speed_pre, openness_pre | float | At Pre_Release_Offset |
-| separation_rel, closing_speed_rel, openness_rel | float | At offset 0 |
+| separation_pre, closing_speed_pre, openness_pre | float | At Pre_Release_Offset; openness_pre is the composite |
+| separation_rel, closing_speed_rel, openness_rel | float | At offset 0; openness_rel is the composite |
+| lane_penalty_pre, lane_penalty_rel | float | Lane_Penalty at Pre_Release_Offset and offset 0 (diagnostic) |
 | depth, depth_vs_sticks | float | x − los_x and x − line_to_gain_x at Pre_Release_Offset |
 | dist_from_qb, rusher_distance | float | Yards |
 | pressured | bool | |
@@ -362,6 +366,7 @@ Columns: `gameId`, `playId`, `receiver_player_id`, `receiver_player_name`, `epa`
 2. FOR ALL pairs of Routes with equal Closing_Speed, the Route with greater Separation SHALL have a greater Openness_Score.
 3. FOR ALL pairs of Routes with equal Separation, the Route with greater Closing_Speed SHALL have an Openness_Score less than or equal to the other Route's.
 4. THE Openness_Calculator SHALL read Pre_Release_Offset from Config, accepting 3, 4 or 5, with default 4.
+9. THE Openness_Calculator SHALL compute Openness_Score as `Separation − Closing_Horizon_s × Closing_Speed − Lambda_Lane × Lane_Penalty`, reading Closing_Horizon_s, Lambda_Lane and Lane_Cushion from Config. FOR ALL pairs of Routes with equal Separation and equal Closing_Speed, the Route with the greater Lane_Penalty SHALL have an Openness_Score less than or equal to the other Route's. WHERE Lambda_Lane is 0, THE Openness_Calculator SHALL produce the same Openness_Score as `Separation − Closing_Horizon_s × Closing_Speed`.
 5. IF Config sets Pre_Release_Offset outside 3–5, THEN THE Openness_Calculator SHALL stop the run and report the allowed values.
 6. THE Openness_Calculator SHALL mark exactly one Eligible_Receiver per Model_Play as Most_Open, using the highest Openness_Score at the Pre_Release_Offset and the lowest `nflId` to break ties.
 7. WHILE Open_Mode is "most_open", THE Openness_Calculator SHALL set Open_Flag equal to Most_Open.
