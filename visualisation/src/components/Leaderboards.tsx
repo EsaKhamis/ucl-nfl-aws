@@ -16,14 +16,53 @@ import type { ReceiverWeekRow } from "@/lib/types";
 
 const TOP_N = 10;
 
-/** One representative row per player (the week with the largest |TOE|). */
-function reduceToPlayers(rows: ReceiverWeekRow[]): ReceiverWeekRow[] {
-  const repByPlayer = new Map<string, ReceiverWeekRow>();
+// Minimum routes (summed over the filtered weeks) for a player to be ranked.
+// Guards the leaderboard against tiny-sample noise: a receiver with 2 routes
+// who happened to be the open target posts a near-ceiling per-week rate-TOE
+// and would otherwise outrank genuine high-volume stars. Mirrors the Metrics
+// split_route_minimum (40). When a single week is filtered, fall back to a
+// smaller per-week floor so the week view is not empty.
+const SEASON_ROUTE_MIN = 40;
+const WEEK_ROUTE_MIN = 8;
+
+/**
+ * Collapse a player's weekly rows into one representative, route-weighted row.
+ *
+ * toe/targetShare/expectedTargetShare are rates, so they are aggregated as
+ * route-weighted means (Σ rate*routes / Σ routes), which equals the true
+ * season rate and matches the Metrics C4 TOE. The representative row carries
+ * the player's largest-sample week for its labels (team/week/story hook).
+ */
+function reduceToPlayers(rows: ReceiverWeekRow[], singleWeek: boolean): ReceiverWeekRow[] {
+  const byPlayer = new Map<string, ReceiverWeekRow[]>();
   for (const r of rows) {
-    const cur = repByPlayer.get(r.playerId);
-    if (!cur || Math.abs(r.toe) > Math.abs(cur.toe)) repByPlayer.set(r.playerId, r);
+    const list = byPlayer.get(r.playerId);
+    if (list) list.push(r);
+    else byPlayer.set(r.playerId, [r]);
   }
-  return [...repByPlayer.values()];
+
+  const floor = singleWeek ? WEEK_ROUTE_MIN : SEASON_ROUTE_MIN;
+  const out: ReceiverWeekRow[] = [];
+  for (const list of byPlayer.values()) {
+    const routes = list.reduce((a, r) => a + r.routesRun, 0);
+    if (routes < floor) continue; // sample-size guard
+
+    const wsum = (sel: (r: ReceiverWeekRow) => number) =>
+      list.reduce((a, r) => a + sel(r) * r.routesRun, 0) / routes;
+    // Representative week = the player's highest-route week, for labels.
+    const rep = list.reduce((a, r) => (r.routesRun > a.routesRun ? r : a), list[0]);
+
+    out.push({
+      ...rep,
+      routesRun: routes,
+      targets: list.reduce((a, r) => a + r.targets, 0),
+      targetShare: wsum((r) => r.targetShare),
+      expectedTargetShare: wsum((r) => r.expectedTargetShare),
+      toe: wsum((r) => r.toe),
+      openRate: wsum((r) => r.openRate),
+    });
+  }
+  return out;
 }
 
 function signedPct(x: number): string {
@@ -97,10 +136,10 @@ function Panel({
 }
 
 export function Leaderboards() {
-  const { filtered } = useDashboard();
+  const { filtered, filters } = useDashboard();
 
   const { overTargeted, ignored } = useMemo(() => {
-    const players = reduceToPlayers(filtered);
+    const players = reduceToPlayers(filtered, filters.week !== "all");
     const over = players
       .filter((p) => p.toe > 0)
       .sort((a, b) => b.toe - a.toe)

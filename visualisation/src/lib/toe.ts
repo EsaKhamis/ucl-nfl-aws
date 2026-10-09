@@ -22,9 +22,9 @@ import type { ExpectationModel, ReceiverWeekRow } from "./types";
  * dataset). Used for the scatter's reference line and as a fallback only.
  */
 export const defaultModel: ExpectationModel = {
-  formula: "expectedTargetShare = routesRun / teamRoutes(week) (route-participation baseline)",
-  a: 0.085037,
-  b: 0.067407,
+  formula: "clamp(a + b*openRate, 0, 1) (fit over tracking expectedTargetShare)",
+  a: 0.205036,
+  b: 0.052851,
 };
 
 function clamp01(x: number): number {
