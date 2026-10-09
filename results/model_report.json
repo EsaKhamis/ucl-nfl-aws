@@ -1,0 +1,64 @@
+{
+  "n_routes": 33569,
+  "n_model_plays": 7257,
+  "mode": "logistic",
+  "features": [
+    "openness",
+    "depth",
+    "dist_from_qb",
+    "rusher_x_depth",
+    "rusher_x_dist_from_qb"
+  ],
+  "n_filled_features": 4,
+  "coefficients": {
+    "openness": 0.29375911325185544,
+    "depth": 0.40623459480348895,
+    "dist_from_qb": -0.4630301694110479,
+    "rusher_x_depth": 0.07807979515619844,
+    "rusher_x_dist_from_qb": -0.022371692068030392,
+    "intercept": -1.3281827759836864
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "n_test": 6650,
+      "log_loss": 0.5096016877543033,
+      "auc": 0.6089377834610832,
+      "top1_accuracy": 0.33657858136300417
+    },
+    {
+      "fold": 1,
+      "n_test": 6653,
+      "log_loss": 0.5087532537293601,
+      "auc": 0.6094441758349662,
+      "top1_accuracy": 0.33890048712595683
+    },
+    {
+      "fold": 2,
+      "n_test": 6644,
+      "log_loss": 0.5127762940580383,
+      "auc": 0.5974177220859789,
+      "top1_accuracy": 0.3474341192787795
+    },
+    {
+      "fold": 3,
+      "n_test": 6812,
+      "log_loss": 0.5119776762116204,
+      "auc": 0.5947267848694557,
+      "top1_accuracy": 0.33242692046227057
+    },
+    {
+      "fold": 4,
+      "n_test": 6810,
+      "log_loss": 0.5083791535209187,
+      "auc": 0.6113606177165254,
+      "top1_accuracy": 0.3410483321987747
+    }
+  ],
+  "cv_mean": {
+    "log_loss": 0.5102976130548481,
+    "auc": 0.6043774167936019,
+    "top1_accuracy": 0.33927768808575715
+  },
+  "xtarget_rel": "fitted (openness_rel)"
+}
